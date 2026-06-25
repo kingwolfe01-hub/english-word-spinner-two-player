@@ -46,7 +46,7 @@
             z-index: 20;
         }
 
-        /* 遊戲全螢幕佈局：上下排列 (上方雙轉盤，下方控制列) */
+        /* 遊戲全螢幕佈局 */
         .game-layout {
             display: flex;
             flex-direction: column; 
@@ -65,13 +65,12 @@
             width: 100%;
             flex: 1;
             align-items: center;
-            justify-content: space-evenly; /* 平均分配空間 */
+            justify-content: space-evenly; 
             gap: 20px;
-            margin-top: 60px; /* 避開左上角標題 */
+            margin-top: 60px; 
             min-height: 0;
         }
 
-        /* 單一轉盤的專屬空間 */
         .wheel-area {
             flex: 1;
             display: flex;
@@ -82,7 +81,6 @@
             max-width: 50%;
         }
 
-        /* 轉盤小標籤 */
         .player-badge {
             background-color: #E91E63;
             color: white;
@@ -102,7 +100,6 @@
             max-width: 100%;
         }
 
-        /* 底圖高度適應：因為有兩個轉盤，主要會受限於螢幕寬度，設定最大高度 70vh */
         .base-layer {
             max-height: 70vh;
             max-width: 100%; 
@@ -125,14 +122,12 @@
             pointer-events: none; 
         }
 
-        /* =========================================
-           🎯 尺寸調整區：上層縮小為 45%
-           ========================================= */
         .mid-wrapper { height: 73.5%; z-index: 2; }
-        .top-wrapper { height: 45%; z-index: 3; } /* 從 57.5% 修改為 45% */
+        .top-wrapper { height: 45%; z-index: 3; } 
         .pointer-wrapper { height: 28%; z-index: 10; }
 
-        .rotatable {
+        /* 僅保留中層、上層可以拖曳操作 */
+        #mid-layer-1, #top-layer-1, #mid-layer-2, #top-layer-2 {
             width: 100%;
             height: 100%;
             object-fit: contain;
@@ -143,8 +138,17 @@
             transform-origin: center center;
         }
 
-        .rotatable:active {
+        #mid-layer-1:active, #top-layer-1:active, #mid-layer-2:active, #top-layer-2:active {
             cursor: grabbing;
+        }
+
+        /* 鎖定雙方的指針圖層，僅供系統出題旋轉 */
+        #pointer-layer-1, #pointer-layer-2 {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transform-origin: center center;
+            pointer-events: none; 
         }
 
         /* 底部控制列 */
@@ -202,6 +206,8 @@
             white-space: nowrap;
         }
         
+        .btn-spin { background-color: #E91E63; }
+        .btn-spin:hover { background-color: #C2185B; transform: scale(1.05); box-shadow: 0 4px 10px rgba(233, 30, 99, 0.4); }
         .btn-audio { background-color: #4CAF50; }
         .btn-audio:hover { background-color: #388E3C; transform: scale(1.05); }
         .btn-success { background-color: #FFC107; color: #333; }
@@ -219,9 +225,9 @@
             .control-panel { flex-wrap: wrap; border-radius: 20px; padding: 15px; justify-content: center; }
             .divider { display: none; }
             .header-title { position: relative; top: auto; left: auto; margin: 10px auto 0 auto; text-align: center; }
-            .wheels-container { margin-top: 10px; flex-direction: column; gap: 30px;} /* 螢幕不夠寬時，雙轉盤改為上下排列 */
+            .wheels-container { margin-top: 10px; flex-direction: column; gap: 30px;} 
             .wheel-area { max-width: 90%; }
-            .base-layer { max-height: 38vh; } /* 避免兩顆轉盤過度擁擠 */
+            .base-layer { max-height: 38vh; } 
         }
     </style>
 </head>
@@ -238,13 +244,13 @@
                 <div class="wheel-container">
                     <img src="base-WS1.jpg" class="base-layer" id="base-image-1" alt="底板1">
                     <div class="wheel-wrapper mid-wrapper">
-                        <img src="mid.png" class="rotatable" id="mid-layer-1" alt="中層">
+                        <img src="mid.png" id="mid-layer-1" alt="中層">
                     </div>
                     <div class="wheel-wrapper top-wrapper">
-                        <img src="top.png" class="rotatable" id="top-layer-1" alt="上層">
+                        <img src="top.png" id="top-layer-1" alt="上層">
                     </div>
                     <div class="wheel-wrapper pointer-wrapper">
-                        <svg class="rotatable" id="pointer-layer-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <svg id="pointer-layer-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <filter id="shadow1" x="-20%" y="-20%" width="140%" height="140%">
                                     <feDropShadow dx="2" dy="6" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
@@ -263,13 +269,13 @@
                 <div class="wheel-container">
                     <img src="base-WS1.jpg" class="base-layer" id="base-image-2" alt="底板2">
                     <div class="wheel-wrapper mid-wrapper">
-                        <img src="mid.png" class="rotatable" id="mid-layer-2" alt="中層">
+                        <img src="mid.png" id="mid-layer-2" alt="中層">
                     </div>
                     <div class="wheel-wrapper top-wrapper">
-                        <img src="top.png" class="rotatable" id="top-layer-2" alt="上層">
+                        <img src="top.png" id="top-layer-2" alt="上層">
                     </div>
                     <div class="wheel-wrapper pointer-wrapper">
-                        <svg class="rotatable" id="pointer-layer-2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <svg id="pointer-layer-2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
                                     <feDropShadow dx="2" dy="6" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
@@ -287,7 +293,7 @@
 
         <div class="control-panel">
             <div class="series-selector">
-                <label for="bg-selector">📚 選擇教材</label>
+                <label for="bg-selector">📚 教材</label>
                 <select id="bg-selector" onchange="changeBaseImage()">
                     <option value="base-WS1.jpg">Wow Story - 一年級</option>
                     <option value="base-WS2.jpg">Wow Story - 二年級</option>
@@ -299,6 +305,7 @@
             <div class="divider"></div>
 
             <div class="btn-group">
+                <button class="btn-spin" onclick="spinPointers()">🎲 雙方出題</button>
                 <button class="btn-audio" onclick="toggleBGM()" id="bgm-btn">🎵 背景音樂</button>
                 <button class="btn-success" onclick="playSuccess()">🎉 答對囉！</button>
             </div>
@@ -331,8 +338,11 @@
     <script>
         const sliceAngle = 360 / 26; 
         let isBgmPlaying = false;
+        
+        // 分別記錄兩組指針的旋轉角度
+        let currentPointerRotation1 = 0;
+        let currentPointerRotation2 = 0;
 
-        // 同步更換兩個轉盤的底圖
         function changeBaseImage() {
             const selector = document.getElementById('bg-selector');
             const baseImg1 = document.getElementById('base-image-1');
@@ -355,8 +365,37 @@
             tick.play().catch(e => console.log('等待互動'));
         }
 
+        // --- 全新：系統雙重隨機出題 ---
+        function spinPointers() {
+            playTickSound();
+            
+            const pointer1 = document.getElementById('pointer-layer-1');
+            const pointer2 = document.getElementById('pointer-layer-2');
+            
+            // 各自產生不同的隨機圈數與最終格數 (確保兩組題目不一樣)
+            const randomRounds1 = (Math.floor(Math.random() * 4) + 3) * 360;
+            const randomSlices1 = Math.floor(Math.random() * 26) * sliceAngle;
+            
+            const randomRounds2 = (Math.floor(Math.random() * 4) + 3) * 360;
+            const randomSlices2 = Math.floor(Math.random() * 26) * sliceAngle;
+            
+            currentPointerRotation1 += (randomRounds1 + randomSlices1);
+            currentPointerRotation2 += (randomRounds2 + randomSlices2);
+            
+            // 強制對齊 26 街區
+            currentPointerRotation1 = Math.round(currentPointerRotation1 / sliceAngle) * sliceAngle;
+            currentPointerRotation2 = Math.round(currentPointerRotation2 / sliceAngle) * sliceAngle;
+
+            // 觸發物理旋轉動畫
+            pointer1.style.transition = 'transform 4s cubic-bezier(0.1, 0.7, 0.1, 1)';
+            pointer1.style.transform = `rotate(${currentPointerRotation1}deg)`;
+            
+            pointer2.style.transition = 'transform 4s cubic-bezier(0.1, 0.7, 0.1, 1)';
+            pointer2.style.transform = `rotate(${currentPointerRotation2}deg)`;
+        }
+
         // ==========================================
-        // 核心升級：支援多點獨立觸控的拖曳邏輯
+        // 多點獨立觸控拖曳邏輯
         // ==========================================
         function makeDraggable(elementId) {
             const element = document.getElementById(elementId);
@@ -364,7 +403,7 @@
             let currentRotation = 0; 
             let previousAngle = 0;   
             let lastSoundRotation = 0; 
-            let activeTouchId = null; // 紀錄是哪一根手指負責拖曳這個元件
+            let activeTouchId = null; 
 
             function getAngle(clientX, clientY) {
                 const rect = element.getBoundingClientRect();
@@ -382,7 +421,6 @@
 
                 let clientX, clientY;
                 if (e.type === 'touchstart') {
-                    // 紀錄按下的這根手指 ID
                     const touch = e.changedTouches[0];
                     activeTouchId = touch.identifier;
                     clientX = touch.clientX;
@@ -401,7 +439,6 @@
 
                 let clientX, clientY;
                 if (e.type === 'touchmove') {
-                    // 在移動的多根手指中，找出負責這個轉盤的那根手指
                     let touch = null;
                     for (let i = 0; i < e.changedTouches.length; i++) {
                         if (e.changedTouches[i].identifier === activeTouchId) {
@@ -409,7 +446,7 @@
                             break;
                         }
                     }
-                    if (!touch) return; // 如果不是負責的手指在動，就忽略
+                    if (!touch) return; 
                     clientX = touch.clientX;
                     clientY = touch.clientY;
                 } else {
@@ -438,7 +475,6 @@
                 if (!isDragging) return;
                 
                 if (e.type === 'touchend' || e.type === 'touchcancel') {
-                    // 確認離開畫面的手指，是不是負責這個轉盤的手指
                     let touchFound = false;
                     for (let i = 0; i < e.changedTouches.length; i++) {
                         if (e.changedTouches[i].identifier === activeTouchId) {
@@ -447,7 +483,7 @@
                         }
                     }
                     if (!touchFound) return; 
-                    activeTouchId = null; // 解除綁定
+                    activeTouchId = null; 
                 }
 
                 isDragging = false;
@@ -469,14 +505,11 @@
             window.addEventListener('touchcancel', onDragEnd);
         }
 
-        // 初始化所有 6 個可旋轉圖層 (左轉盤 3 個，右轉盤 3 個)
+        // 初始化中層、上層圖層可拖曳，排除指針圖層
         makeDraggable('mid-layer-1');
         makeDraggable('top-layer-1');
-        makeDraggable('pointer-layer-1');
-        
         makeDraggable('mid-layer-2');
         makeDraggable('top-layer-2');
-        makeDraggable('pointer-layer-2');
 
         function toggleBGM() {
             const bgm = document.getElementById('audio-bgm');
